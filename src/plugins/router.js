@@ -5,42 +5,27 @@ import Vue from 'vue'
 
 import VueRouter from 'vue-router'
 
-import IdlePanel from '@/views/IdlePanel'
-
-import UnavailablePanel from '@/views/operator/UnavailablePanel'
-
-import TransactionPanel from '@/views/customer/TransactionPanel'
-import AuthPanel from '@/views/customer/AuthPanel'
-import SelectPanel from '@/views/customer/transaction/SelectPanel'
-import Withdrawal from '@/views/customer/transaction/Withdrawal'
-import Deposit from '@/views/customer/transaction/Deposit'
-import Inquiry from '@/views/customer/transaction/Inquiry'
-import ChangePin from '@/views/customer/transaction/ChangePin'
-import Loan from '@/views/customer/transaction/Loan'
-import Payback from '@/views/customer/transaction/Payback'
-import Transfer from '@/views/customer/transaction/Transfer'
-
 Vue.use(VueRouter)
 
 export default new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   routes: [
     {
       name: 'unavailable',
       path: '/',
-      component: UnavailablePanel
+      component: () => import('@/views/operator/UnavailablePanel')
     }, {
       name: 'idle',
       path: '/idle',
-      component: IdlePanel
+      component: () => import('@/views/IdlePanel')
     }, {
       name: 'auth',
       path: '/auth',
-      component: AuthPanel      
+      component: () => import('@/views/customer/AuthPanel')      
     }, {
       name: 'transaction',
       path: '/transaction',
-      component: TransactionPanel,
+      component: () => import('@/views/customer/TransactionPanel'),
       children: [
         {
           path: '',
@@ -48,35 +33,35 @@ export default new VueRouter({
         }, {
           name: 'transaction-select',
           path: 'select',
-          component: SelectPanel
+          component: () => import('@/views/customer/transaction/SelectPanel')
         }, {
           name: 'withdrawal',
           path: 'withdrawal',
-          component: Withdrawal
+          component: () => import('@/views/customer/transaction/Withdrawal')
         }, {
           name: 'deposit',
           path: 'deposit',
-          component: Deposit
+          component: () => import('@/views/customer/transaction/Deposit')
         }, {
           name: 'transfer',
           path: 'transfer',
-          component: Transfer
+          component: () => import('@/views/customer/transaction/Transfer')
         }, {
           name: 'loan',
           path: 'loan',
-          component: Loan
+          component: () => import('@/views/customer/transaction/Loan')
         }, {
           name: 'payback',
           path: 'payback',
-          component: Payback
+          component: () => import('@/views/customer/transaction/Payback')
         }, {
           name: 'inquiry',
           path: 'inquiry',
-          component: Inquiry
+          component: () => import('@/views/customer/transaction/Inquiry')
         }, {
           name: 'change-pin',
           path: 'pin',
-          component: ChangePin
+          component: () => import('@/views/customer/transaction/ChangePin')
         }
       ]
     }

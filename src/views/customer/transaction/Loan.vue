@@ -2,9 +2,7 @@
   <el-container
     style="width:100%;height:100%;display:flex;justify-content:center;align-items:center;"
   >
-    <el-card v-if="hasLoan" style="max-width:80%;min-width:700px;height:550px;">
-      
-    </el-card>
+    <el-card v-if="hasLoan" style="max-width:80%;min-width:700px;height:550px;"></el-card>
     <el-card
       v-else-if="step===0"
       style="max-width:80%;min-width:700px;height:550px;text-align:center;"
@@ -79,7 +77,8 @@ export default {
         {
           value: "SHORT TERM LOAN-12",
           label: "短期贷款-12个月"
-        },{
+        },
+        {
           value: "SHORT TERM LOAN-6",
           label: "短期贷款-6个月"
         }
@@ -137,7 +136,7 @@ export default {
           accountNumber.slice(0, 10) + "******" + accountNumber.slice(16),
         Terminal: "90908",
         "Trans Type": new String(this.loanType),
-        Amount: "$" + new String(this.amount),
+        Amount: "$" + new String(this.loaAmount),
         Fee: 0,
         "Serial No.": "05447"
       };
@@ -151,8 +150,8 @@ export default {
       }
       this.step = 1;
     },
-    ejectCard(){
-      this.$store.dispatch('ejectCard');
+    ejectCard() {
+      this.$store.dispatch("ejectCard");
       this.$message.info("退出成功");
       this.$router.replace({ name: "idle" });
     }

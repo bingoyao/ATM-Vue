@@ -133,7 +133,7 @@ export default {
           route = "transfer";
           break;
         case "ChangePIN":
-          route = "changepin";
+          route = "change-pin";
           break;
         case "Loan":
           route = "loan";

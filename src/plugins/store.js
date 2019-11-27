@@ -34,6 +34,9 @@ export default new Vuex.Store({
         state.account.pin = oldPin.substring(0, oldPin.length - 1);
       }
     },
+    setPin(state, pin) {
+      state.account.pin = pin;
+    },
     clearPin(state) {
       state.account.pin = '';
     },

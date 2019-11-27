@@ -70,6 +70,7 @@
 
 import Keyboard from "@/components/Keyboard";
 import Receipt from "@/components/Receipt";
+import LogHelper from "@/utilities/LogHelper";
 
 export default {
   data() {
@@ -107,7 +108,7 @@ export default {
         this.amount += num;
       }
     },
-    
+
     /**
      * 客户点击删除按键
      */
@@ -125,25 +126,22 @@ export default {
       if (!a.endsWith("00")) {
         this.$message.error("请输入100的整数倍");
       } else {
-        this.receipt = [];
-        let now = new Date();
         let accountNumber = new String(this.$store.state.account.number);
-        let timeStr = `${now.getFullYear()}-${now.getMonth() +
-          1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-        let receiptItems = {
-          "Data and Time": timeStr,
-          "Account No": accountNumber.slice(0, 10) + "******" + accountNumber.slice(16),
-          "Terminal": "90908",
-          "Trans Type": "WITHDRAWAL",
-          "Amount": "$" + a,
-          "Fee": 0,
-          "Serial No.": "05447"
-        };
-        for(let receiptItemName in receiptItems){
-          if(receiptItems.hasOwnProperty(receiptItemName)){
+
+        this.receipt = [];
+        let logInfo = LogHelper.log({
+          accountNumber,
+          transactionType: "WITHDRAWAL",
+          amount: a,
+          transTo: ''
+        });
+        this.$store.commit('reduceBalances',a);
+        this.$store.commit("pushSystemLog", logInfo);
+        for (let receiptItemName in logInfo) {
+          if (logInfo.hasOwnProperty(receiptItemName)) {
             this.receipt.push({
               name: receiptItemName,
-              value: receiptItems[receiptItemName]
+              value: logInfo[receiptItemName]
             });
           }
         }

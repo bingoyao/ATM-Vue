@@ -39,6 +39,8 @@
 </template>
 <script>
 import Receipt from "@/components/Receipt";
+import LogHelper from "@/utilities/LogHelper";
+
 export default {
   data() {
     return {
@@ -88,25 +90,20 @@ export default {
     performTransaction() {
       let a = new String(this.amount);
       this.receipt = [];
-      let now = new Date();
       let accountNumber = new String(this.$store.state.account.number);
-      let timeStr = `${now.getFullYear()}-${now.getMonth() +
-        1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-      let receiptItems = {
-        "Data and Time": timeStr,
-        "Account No":
-          accountNumber.slice(0, 10) + "******" + accountNumber.slice(16),
-        Terminal: "90908",
-        "Trans Type": "DEPOSIT",
-        Amount: "$" + a,
-        Fee: 0,
-        "Serial No.": "05447"
-      };
-      for (let receiptItemName in receiptItems) {
-        if (receiptItems.hasOwnProperty(receiptItemName)) {
+      let logInfo = LogHelper.log({
+        accountNumber,
+        transactionType: 'DEPOSIT',
+        amount: a,
+        transTo: ''
+      });
+      this.$store.commit('increaseBalances',a);
+      this.$store.commit('pushSystemLog',logInfo);
+      for (let receiptItemName in logInfo) {
+        if (logInfo.hasOwnProperty(receiptItemName)) {
           this.receipt.push({
             name: receiptItemName,
-            value: receiptItems[receiptItemName]
+            value: logInfo[receiptItemName]
           });
         }
       }

@@ -19,10 +19,13 @@
         </el-button>
       </el-tooltip>
     </el-card>
-    <el-dialog title="系统日志" center :modal="false" :visible.sync="showingLog" width="73%">
-      <el-table :data="systemLog" style="width:700px;">
+    <el-dialog title="系统日志" center :modal="false" :visible.sync="showingLog" width="90%">
+      <el-table :data="systemLog" style="width:900px;">
         <el-table-column property="time" label="时间" width="150"></el-table-column>
-        <el-table-column property="event" label="事件" width="450"></el-table-column>
+        <el-table-column property="accountNumber" label="账户" width="170"></el-table-column>
+        <el-table-column property="transactionType" label="事务" width="150"></el-table-column>
+        <el-table-column property="amount" label="金额" width="100"></el-table-column>
+        <el-table-column property="transTo" label="收款人" width="170"></el-table-column>
       </el-table>
     </el-dialog>
     <el-main style="display:flex;justify-content:center;align-items:center;padding:0;">

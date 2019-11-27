@@ -17,8 +17,11 @@ export default new Vuex.Store({
       credits: 0
     },
     systemLog: [{
-      time: '2019-11-25 21:27',
-      event: 'Jack Ma withdrawal $1000.'
+      time: '2019-11-27 11:11',
+      accountNumber: '9090909090909090909',
+      transactionType: 'SHORT TERM-12', 
+      amount: '5000', 
+      transTo: '8080808080808080808'
     }]
 
   },
@@ -52,7 +55,6 @@ export default new Vuex.Store({
       state.account.telephone = acnt.telephone;
       state.account.number = acnt.number;
       state.account.credits = acnt.credits;
-
     },
     clearAccount(state) {
       state.account = {
@@ -66,6 +68,16 @@ export default new Vuex.Store({
     },
     pushSystemLog(state, record) {
       state.systemLog.push(record);
+    },
+    reduceBalances(state,a){
+      let amount = parseInt(a);
+      let current = parseInt(state.account.balances);
+      state.account.balances = current - amount;
+    },
+    increaseBalances(state,a){
+      let amount = parseInt(a);
+      let current = parseInt(state.account.balances);
+      state.account.balances = current + amount;
     }
   },
   actions: {

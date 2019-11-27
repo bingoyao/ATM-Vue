@@ -1,0 +1,7 @@
+{
+  "number":"6666666666666666666",
+  "name":"Test Card",
+  "telephone":"100100",
+  "balances":6000,
+  "credits":90
+}

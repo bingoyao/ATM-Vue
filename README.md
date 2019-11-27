@@ -1,7 +1,15 @@
-# [ATM-Vue](https://bingoyao.github.io/ATM-Vue/#/) 在线：https://bingoyao.github.io/ATM-Vue/#/
+# [ATM-Vue](https://bingoyao.github.io/ATM-Vue/#/)
 
-# 开发
-### 使用以下命令安装依赖
+## 使用
+### 下载文件
+ ***[card.txt](./public/card.txt)*** : 银行卡🎫
+ ***[money.txt](./public/money.txt)*** : 现金💵
+
+### 在线使用
+🔗：https://bingoyao.github.io/ATM-Vue/#/
+
+## 开发
+### 克隆仓库后使用以下命令安装依赖
 ```
 npm install
 ```
@@ -16,12 +24,12 @@ npm run serve
 npm run build
 ```
 
-### 修正格式和错误
+### 修正文件格式和错误
 ```
 npm run lint
 ```
 
-# 打包为桌面应用 详见[nativefier文档](https://github.com/jiahaog/nativefier/blob/master/docs/api.md)
+## 打包为桌面应用 详见[nativefier文档](https://github.com/jiahaog/nativefier/blob/master/docs/api.md)
 ### 全局安装打包程序
 ```
 npm install -g nativefier

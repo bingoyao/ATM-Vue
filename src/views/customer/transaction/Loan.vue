@@ -2,42 +2,163 @@
   <el-container
     style="width:100%;height:100%;display:flex;justify-content:center;align-items:center;"
   >
-    <el-card style="max-width:80%;min-width:700px;height:550px;">
-      your current loan
+    <el-card v-if="hasLoan" style="max-width:80%;min-width:700px;height:550px;">
+      
     </el-card>
-    <el-card style="max-width:80%;min-width:700px;height:550px;">
+    <el-card
+      v-else-if="step===0"
+      style="max-width:80%;min-width:700px;height:550px;text-align:center;"
+    >
       <div slot="header">贷款申请单</div>
-      fill the loan request table, amount|term
+      <div style="padding:20px;">你的信用{{ creditsDescript }}</div>
+      <div style="padding:20px;">
+        <el-row :gutter="5">
+          <el-col :span="8">
+            <div style="width:200px;text-align:right;line-height:40px;">选择贷款类型：</div>
+          </el-col>
+          <el-col :span="16">
+            <el-select v-model="loanType" placeholder="请选择">
+              <el-option
+                v-for="item in loanTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+      </div>
+      <div style="padding:20px;">
+        <el-row :gutter="5">
+          <el-col :span="8">
+            <div style="width:200px;text-align:right;line-height:40px;">选择贷款金额：</div>
+          </el-col>
+          <el-col :span="16">
+            <el-select v-model="loanAmount" placeholder="请选择">
+              <el-option
+                v-for="item in loanAmountOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+      </div>
+      <div
+        style="width:400px;margin:0 auto;display:flex;justify-content:space-between;margin-top:20px;"
+      >
+        <el-button @click.native="goBack" type="danger">取消</el-button>
 
-      <keyboard></keyboard>
+        <el-button @click.native="performTransaction" type="primary">确定</el-button>
+      </div>
     </el-card>
-    <el-card style="max-width:80%;min-width:700px;height:550px;">
-      show timeline and waiting...
-      choose to go back
+    <el-card v-else-if="step===1" style="max-width:80%;min-width:700px;height:550px;">
+      <div slot="header" style="text-align:center;">交易成功</div>
+      <receipt :receiptInfo="receipt"></receipt>
+      <div style="display:flex;padding:20px;justify-content:space-between;">
+        <el-button type="primary" @click.native="goBack">返回</el-button>
+        <el-button type="danger" @click.native="ejectCard">退卡</el-button>
+      </div>
     </el-card>
   </el-container>
 </template>
 <script>
-import Keyboard from '@/components/Keyboard'
+import Receipt from "@/components/Receipt";
 
 export default {
-  
-  data(){
+  data() {
     return {
-
+      hasLoan: false,
+      step: 0,
+      loanType: "",
+      loanAmount: "",
+      amount: "",
+      receipt: [],
+      loanTypeOptions: [
+        {
+          value: "SHORT TERM LOAN-12",
+          label: "短期贷款-12个月"
+        },{
+          value: "SHORT TERM LOAN-6",
+          label: "短期贷款-6个月"
+        }
+      ],
+      loanAmountOptions: [
+        {
+          value: "2000",
+          label: "2,000"
+        },
+        {
+          value: "5000",
+          label: "5,000"
+        },
+        {
+          value: "10000",
+          label: "10,000"
+        },
+        {
+          value: "20000",
+          label: "20,000"
+        }
+      ]
+    };
+  },
+  computed: {
+    creditsDescript() {
+      let c = this.$store.state.account.credits;
+      if (c >= 90) {
+        return "优秀";
+      } else if (c >= 80) {
+        return "良好";
+      } else if (c >= 65) {
+        return "一般";
+      } else {
+        return "不合格";
+      }
     }
   },
-  components:{
-    Keyboard
+  components: {
+    Receipt
   },
-  methods:{
-
+  methods: {
+    goBack() {
+      this.$router.replace({ name: "transaction-select" });
+    },
+    performTransaction() {
+      this.receipt = [];
+      let now = new Date();
+      let accountNumber = new String(this.$store.state.account.number);
+      let timeStr = `${now.getFullYear()}-${now.getMonth() +
+        1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+      let receiptItems = {
+        "Data and Time": timeStr,
+        "Account No":
+          accountNumber.slice(0, 10) + "******" + accountNumber.slice(16),
+        Terminal: "90908",
+        "Trans Type": new String(this.loanType),
+        Amount: "$" + new String(this.amount),
+        Fee: 0,
+        "Serial No.": "05447"
+      };
+      for (let receiptItemName in receiptItems) {
+        if (receiptItems.hasOwnProperty(receiptItemName)) {
+          this.receipt.push({
+            name: receiptItemName,
+            value: receiptItems[receiptItemName]
+          });
+        }
+      }
+      this.step = 1;
+    },
+    ejectCard(){
+      this.$store.dispatch('ejectCard');
+      this.$message.info("退出成功");
+      this.$router.replace({ name: "idle" });
+    }
   },
-  created(){
-
-  }
-}
+  created() {}
+};
 </script>
 <style scoped>
-
 </style>

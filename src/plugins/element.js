@@ -26,7 +26,9 @@ import {
   Tag,
   Timeline,
   TimelineItem,
-  Loading
+  Loading,
+  Select,
+  Option
 } from 'element-ui'
 
 Vue.use(Button)
@@ -50,16 +52,11 @@ Vue.use(Link)
 Vue.use(Tag)
 Vue.use(Timeline)
 Vue.use(TimelineItem)
-
-
+Vue.use(Select)
+Vue.use(Option)
 
 
 Vue.prototype.$message = Message
 Vue.prototype.$loading = Loading
-
-
-
-
-
 
 

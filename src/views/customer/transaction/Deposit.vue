@@ -8,6 +8,9 @@
           <el-upload drag action :before-upload="readMoney">请放入现金</el-upload>
         </el-tooltip>
       </div>
+      <div style="display:flex;padding:20px;justify-content:space-between;">
+        <el-button type="primary" @click.native="goBack">取消</el-button>
+      </div>
     </el-card>
     <el-card v-else-if="step==1" style="max-width:80%;min-width:700px;height:550px;">
       <el-row :gutter="5">
@@ -89,34 +92,24 @@ export default {
       let accountNumber = new String(this.$store.state.account.number);
       let timeStr = `${now.getFullYear()}-${now.getMonth() +
         1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-      this.receipt.push({
-        name: "Date and Time ",
-        value: timeStr
-      });
-      this.receipt.push({
-        name: "Account No ",
-        value: accountNumber.slice(0, 10) + "******" + accountNumber.slice(16)
-      });
-      this.receipt.push({
-        name: "Terminal ",
-        value: "90908"
-      });
-      this.receipt.push({
-        name: "Trans Type ",
-        value: "DEPOSIT"
-      });
-      this.receipt.push({
-        name: "Amount ",
-        value: "$" + a
-      });
-      this.receipt.push({
-        name: "Fee ",
-        value: 0
-      });
-      this.receipt.push({
-        name: "Serial No. ",
-        value: "05448"
-      });
+      let receiptItems = {
+        "Data and Time": timeStr,
+        "Account No":
+          accountNumber.slice(0, 10) + "******" + accountNumber.slice(16),
+        Terminal: "90908",
+        "Trans Type": "DEPOSIT",
+        Amount: "$" + a,
+        Fee: 0,
+        "Serial No.": "05447"
+      };
+      for (let receiptItemName in receiptItems) {
+        if (receiptItems.hasOwnProperty(receiptItemName)) {
+          this.receipt.push({
+            name: receiptItemName,
+            value: receiptItems[receiptItemName]
+          });
+        }
+      }
       this.step = 2;
     },
     /**

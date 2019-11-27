@@ -130,34 +130,23 @@ export default {
         let accountNumber = new String(this.$store.state.account.number);
         let timeStr = `${now.getFullYear()}-${now.getMonth() +
           1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-        this.receipt.push({
-          name: "Date and Time",
-          value: timeStr
-        });
-        this.receipt.push({
-          name: "Account No",
-          value: accountNumber.slice(0, 10) + "******" + accountNumber.slice(16)
-        });
-        this.receipt.push({
-          name: "Terminal",
-          value: "90908"
-        });
-        this.receipt.push({
-          name: "Trans Type",
-          value: "WITHDRAWAL"
-        });
-        this.receipt.push({
-          name: "Amount",
-          value: "$" + a
-        });
-        this.receipt.push({
-          name: "Fee",
-          value: 0
-        });
-        this.receipt.push({
-          name: "Serial No.",
-          value: "05447"
-        });
+        let receiptItems = {
+          "Data and Time": timeStr,
+          "Account No": accountNumber.slice(0, 10) + "******" + accountNumber.slice(16),
+          "Terminal": "90908",
+          "Trans Type": "WITHDRAWAL",
+          "Amount": "$" + a,
+          "Fee": 0,
+          "Serial No.": "05447"
+        };
+        for(let receiptItemName in receiptItems){
+          if(receiptItems.hasOwnProperty(receiptItemName)){
+            this.receipt.push({
+              name: receiptItemName,
+              value: receiptItems[receiptItemName]
+            });
+          }
+        }
         this.step = 1;
       }
     },

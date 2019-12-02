@@ -3,5 +3,6 @@
   "name":"Test Card",
   "telephone":"100100",
   "balances":6000,
-  "credits":90
+  "credits":90,
+  "pin":"888888"
 }

@@ -22,8 +22,8 @@ export default new Vuex.Store({
       transactionType: 'SHORT TERM-12', 
       amount: '5000', 
       transTo: '8080808080808080808'
-    }]
-
+    }],
+    invalidAccount:[]
   },
   mutations: {
     pushPin(state, num) {
@@ -55,6 +55,7 @@ export default new Vuex.Store({
       state.account.telephone = acnt.telephone;
       state.account.number = acnt.number;
       state.account.credits = acnt.credits;
+      state.account.pin = acnt.pin;
     },
     clearAccount(state) {
       state.account = {
@@ -78,6 +79,9 @@ export default new Vuex.Store({
       let amount = parseInt(a);
       let current = parseInt(state.account.balances);
       state.account.balances = current + amount;
+    },
+    pushInvalidAccount(state,a){
+      state.invalidAccount.push(a);
     }
   },
   actions: {

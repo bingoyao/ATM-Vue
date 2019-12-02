@@ -40,6 +40,19 @@
         </el-col>
       </el-row>
       <el-divider></el-divider>
+      <el-row :gutter="5">
+        <el-col :span="8">
+          <div style="width:200px;text-align:right;line-height:40px;margin-bottom:20px;">快速输入：</div>
+        </el-col>
+        <el-col :span="16">
+          <div>
+            <el-button @click.native="amount=100">100</el-button>
+            <el-button @click.native="amount=200">200</el-button>
+            <el-button @click.native="amount=500">500</el-button>
+            <el-button @click.native="amount=1000">1000</el-button>
+          </div>
+        </el-col>
+      </el-row>
       <keyboard @press="keypress('amount',$event)"></keyboard>
       <div
         style="width:400px;margin:0 auto;display:flex;justify-content:space-between;margin-top:20px;"

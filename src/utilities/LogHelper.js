@@ -15,10 +15,13 @@ export default {
     transTo
   }) {
     let time = TimeHelper.timeStr();
-    accountNumber = accountNumber.slice(0, 10) + "******" + accountNumber.slice(16);
+    accountNumber = accountNumber.slice(0, 10) + '*'.repeat(6) + accountNumber.slice(16);
     transactionType = transactionType.toUpperCase();
     amount = `$ ${amount}`;
     transTo = transTo || '-';
+    if(transTo!=='-'){
+      transTo = transTo.slice(0,10) + '*'.repeat(6) + transTo.slice(16);
+    }
     return {
       time, 
       accountNumber, 

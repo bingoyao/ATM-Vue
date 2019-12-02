@@ -14,6 +14,7 @@ import {
   Main,
   Image,
   Carousel,
+  CarouselItem,
   Divider,
   Row,
   Col,
@@ -41,6 +42,7 @@ Vue.use(Header)
 Vue.use(Main)
 Vue.use(Image)
 Vue.use(Carousel)
+Vue.use(CarouselItem)
 Vue.use(Divider)
 Vue.use(Col)
 Vue.use(Row)

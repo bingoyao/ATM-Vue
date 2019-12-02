@@ -46,8 +46,15 @@
 
     <!-- 领取现金 -->
     <el-card v-else-if="step==1" style="max-width:80%;min-width:700px;height:550px;">
-      take your cash
-      <el-button outlined @click.native="takeCash">take</el-button>
+      <div style="padding:50px;margin:0 auto;width:80%;text-align:center;">
+        <el-image :src="moneyUrl"></el-image>
+      </div>
+      <div style="display:flex;justify-content:center;">
+        <el-tooltip placement="bottom">
+          <div slot="content">点击领取现金</div>
+          <el-button type="success" outlined @click.native="takeCash">取钱</el-button>
+        </el-tooltip>
+      </div>
     </el-card>
 
     <!-- 交易完成， -->
@@ -78,7 +85,9 @@ export default {
       // 正在进行的步骤
       step: 0,
       amount: "",
-      receipt: []
+      receipt: [],
+      moneyUrl:
+        "https://img.ivsky.com/img/tupian/pre/201809/24/meiyuan_zhibi-012.jpg"
     };
   },
   components: {
@@ -139,6 +148,7 @@ export default {
         this.$store.commit("pushSystemLog", logInfo);
         for (let receiptItemName in logInfo) {
           if (logInfo.hasOwnProperty(receiptItemName)) {
+
             this.receipt.push({
               name: receiptItemName,
               value: logInfo[receiptItemName]

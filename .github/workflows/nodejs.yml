@@ -27,7 +27,9 @@ jobs:
     needs: [build]
     steps:
     - name: show current dir
-      run: pwd
+      run: |
+        pwd
+        ls
       shell: bash
     - name: execute deploy
       uses: crazy-max/ghaction-github-pages@v1.2.5

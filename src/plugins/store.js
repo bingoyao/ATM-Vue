@@ -8,6 +8,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // 客户账户信息
     account: {
       pin: '',
       number: '',
@@ -16,6 +17,7 @@ export default new Vuex.Store({
       telephone: '',
       credits: 0
     },
+    // 系统日志
     systemLog: [{
       time: '2019-11-27 11:11',
       accountNumber: '9090909090909090909',
@@ -23,7 +25,17 @@ export default new Vuex.Store({
       amount: '5000', 
       transTo: '8080808080808080808'
     }],
-    invalidAccount:[]
+    // 这台ATM机的信息
+    atm: {
+      // ATM机编号
+      number: '',
+      // 所属银行
+      bankName: '',
+      // 可取现金额
+      cash: 0,
+      // 非法账户集
+      invalidAccount:[]
+    }
   },
   mutations: {
     pushPin(state, num) {
@@ -81,7 +93,7 @@ export default new Vuex.Store({
       state.account.balances = current + amount;
     },
     pushInvalidAccount(state,a){
-      state.invalidAccount.push(a);
+      state.atm.invalidAccount.push(a);
     }
   },
   actions: {

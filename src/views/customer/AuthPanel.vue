@@ -69,7 +69,7 @@ export default {
     },
     confirmPin() {
       let p = new String(this.pin);
-      let invalidAccount = this.$store.state.invalidAccount;
+      let invalidAccount = this.$store.state.atm.invalidAccount;
       let account = this.$store.state.account.number;
       let invalid = invalidAccount.includes(account);
       // 如果本次会话已输错3次以上或之前已经被锁定，不检查，直接退卡

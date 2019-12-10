@@ -35,6 +35,9 @@
 </template>
 
 <script>
+/**
+ * 应用主框架
+ */
 export default {
   name: "app",
   components: {},
@@ -75,7 +78,8 @@ export default {
         if (_.$route.path == "/idle") {
           _.$router.replace({ name: "unavailable" });
         } else {
-          _.$router.replace({ name: "idle" });
+          _.$router.replace({ name: "configure" });
+          // _.$router.replace({ name: "idle" });
         }
       }, 1000);
     }

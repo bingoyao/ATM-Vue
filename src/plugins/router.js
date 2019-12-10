@@ -1,5 +1,6 @@
 /**
  * 配置应用的页面路由信息
+ * ！：使用异步加载来缩小单个文件的体积
  */
 import Vue from 'vue'
 
@@ -22,6 +23,10 @@ export default new VueRouter({
       name: 'auth',
       path: '/auth',
       component: () => import('@/views/customer/AuthPanel')      
+    }, {
+      name: 'configure',
+      path: '/configure',
+      component: () => import('@/views/operator/ConfigurePanel')
     }, {
       name: 'transaction',
       path: '/transaction',

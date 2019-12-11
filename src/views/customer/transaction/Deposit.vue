@@ -97,6 +97,7 @@ export default {
         amount: a,
         transTo: ''
       });
+      this.$store.commit('increaseCash',a);
       this.$store.commit('increaseBalances',a);
       this.$store.commit('pushSystemLog',logInfo);
       for (let receiptItemName in logInfo) {

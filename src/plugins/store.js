@@ -94,6 +94,18 @@ export default new Vuex.Store({
     },
     pushInvalidAccount(state,a){
       state.atm.invalidAccount.push(a);
+    },
+    initATMCash(state,cash){
+      state.atm.cash = cash;
+    },
+    reduceCash(state,amount){
+      let r = parseInt(amount);
+      if(state.atm.cash>=r){
+        state.atm.cash -= r;
+      }
+    },
+    increaseCash(state,amount){
+      state.atm.cash += parseInt(amount);
     }
   },
   actions: {

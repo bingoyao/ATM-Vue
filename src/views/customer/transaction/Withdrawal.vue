@@ -144,6 +144,7 @@ export default {
           amount: a,
           transTo: ''
         });
+        this.$store.commit('reduceCash',a);
         this.$store.commit('reduceBalances',a);
         this.$store.commit("pushSystemLog", logInfo);
         for (let receiptItemName in logInfo) {

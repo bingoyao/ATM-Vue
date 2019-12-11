@@ -152,8 +152,7 @@ export default {
       this.$message.info("退出成功");
       this.$router.replace({ name: "idle" });
     }
-  },
-  created() {}
+  }
 };
 </script>
 <style scoped>

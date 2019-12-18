@@ -47,7 +47,9 @@
     <!-- 领取现金 -->
     <el-card v-else-if="step==1" style="max-width:80%;min-width:700px;height:550px;">
       <div style="padding:50px;margin:0 auto;width:80%;text-align:center;">
-        <el-image :src="moneyUrl"></el-image>
+        <transition>
+          <el-image src="./money.jpg"></el-image>
+        </transition>
       </div>
       <div style="display:flex;justify-content:center;">
         <el-tooltip placement="bottom">
@@ -77,7 +79,7 @@
 
 import Keyboard from "@/components/Keyboard";
 import Receipt from "@/components/Receipt";
-import LogHelper from "@/utilities/LogHelper";
+import TimeHelper from "@/utilities/TimeHelper";
 
 export default {
   data() {
@@ -85,9 +87,7 @@ export default {
       // 正在进行的步骤
       step: 0,
       amount: "",
-      receipt: [],
-      moneyUrl:
-        "https://img.ivsky.com/img/tupian/pre/201809/24/meiyuan_zhibi-012.jpg"
+      receipt: []
     };
   },
   components: {
@@ -135,27 +135,49 @@ export default {
       if (!a.endsWith("00")) {
         this.$message.error("请输入100的整数倍");
       } else {
-        let accountNumber = new String(this.$store.state.account.number);
-
         this.receipt = [];
-        let logInfo = LogHelper.log({
-          accountNumber,
-          transactionType: "WITHDRAWAL",
-          amount: a,
-          transTo: ''
-        });
-        this.$store.commit('reduceCash',a);
-        this.$store.commit('reduceBalances',a);
-        this.$store.commit("pushSystemLog", logInfo);
-        for (let receiptItemName in logInfo) {
-          if (logInfo.hasOwnProperty(receiptItemName)) {
 
-            this.receipt.push({
-              name: receiptItemName,
-              value: logInfo[receiptItemName]
-            });
+        this.$store.commit("reduceCash", a);
+        this.$store.commit("reduceBalances", a);
+        let number = new String(this.$store.state.account.number);
+        let result = [
+          {
+            name: "账号",
+            value: number.slice(0, 10) + "*".repeat(6) + number.slice(16)
+          },
+          {
+            name: "交易类型",
+            value: "取现"
+          },
+          {
+            name: "金额",
+            value: new String(this.amount)
+          },
+          {
+            name: "余额",
+            value: new String(this.$store.state.account.balances)
+          },
+          {
+            name: "交易时间",
+            value: TimeHelper.timeStr()
+          },
+          {
+            name: "终端编号",
+            value: new String(this.$store.state.atm.number)
           }
-        }
+        ];
+
+        result.forEach(resultItem => {
+          this.receipt.push(resultItem);
+        });
+        this.$store.commit("pushSystemLog", {
+          time: result[4].value,
+          accountNumber: number,
+          transactionType: "WITHDRAWAL",
+          amount: new String(this.amount),
+          transTo: "-"
+        });
+
         this.step = 1;
       }
     },

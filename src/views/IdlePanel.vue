@@ -1,5 +1,6 @@
 <template>
-  <el-container @mousemove.native="move"
+  <el-container
+    @mousemove.native="move"
     style="display:flex;justify-content:center;align-items:center;height:100%;padding:0;"
   >
     <div v-if="ready" style="position:fixed;width:200px;top:50%;left:50%;font-size:15px;">
@@ -10,17 +11,17 @@
     <div v-else-if="!ready" style="position:fixed;width:70%;height:75%;">
       <el-carousel :interval="4000" arrow="never" indicator-position="none">
         <el-carousel-item style="width:100%;height:100%;">
-          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
-            <div style="font-size:50px;color:#CCCCCC;text-align:center;">
-              welcome!
-            </div>
+          <div
+            style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"
+          >
+            <div style="font-size:50px;color:#CCCCCC;text-align:center;">welcome!</div>
           </div>
         </el-carousel-item>
         <el-carousel-item style="width:100%;height:100%;">
-          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
-            <div style="font-size:50px;color:#CC0033;text-align:center;">
-              welcome!
-            </div>
+          <div
+            style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"
+          >
+            <div style="font-size:50px;color:#CC0033;text-align:center;">welcome!</div>
           </div>
         </el-carousel-item>
       </el-carousel>
@@ -66,7 +67,15 @@ export default {
       })
         .then(res => {
           let info = JSON.parse(res);
-          _.$store.commit("setAccount",info);
+
+          if (info && info.number) {
+            return info;
+          } else {
+            throw new Error("无效卡");
+          }
+        })
+        .then(info => {
+          _.$store.commit("setAccount", info);
 
           _.$router.replace({ name: "auth" });
         })
@@ -78,20 +87,18 @@ export default {
 
       return false;
     },
-    move(){
+    move() {
       let _ = this;
       _.ready = true;
-      if(_.timer){
+      if (_.timer) {
         window.clearTimeout(_.timer);
       }
-      _.timer = window.setTimeout(()=>{
+      _.timer = window.setTimeout(() => {
         _.ready = false;
-      },5000);
+      }, 5000);
     }
   },
-  created(){
-    
-  }
+  created() {}
 };
 </script>
 <style scoped>

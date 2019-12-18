@@ -15,7 +15,9 @@ export default new Vuex.Store({
       name: '',
       balances: 0,
       telephone: '',
-      credits: 0
+      credits: 0,
+      loan: 0,
+      loanTime: ''
     },
     // 系统日志
     systemLog: [{
@@ -28,7 +30,7 @@ export default new Vuex.Store({
     // 这台ATM机的信息
     atm: {
       // ATM机编号
-      number: '',
+      number: 'T800',
       // 所属银行
       bankName: '',
       // 可取现金额
@@ -68,6 +70,11 @@ export default new Vuex.Store({
       state.account.number = acnt.number;
       state.account.credits = acnt.credits;
       state.account.pin = acnt.pin;
+      state.account.bank = acnt.bank;
+      state.account.loan = acnt.loan;
+      state.account.loanTime = acnt.loanTime;
+      state.account.createTime = acnt.createTime;
+      state.account.wallet = acnt.wallet;
     },
     clearAccount(state) {
       state.account = {
@@ -106,6 +113,14 @@ export default new Vuex.Store({
     },
     increaseCash(state,amount){
       state.atm.cash += parseInt(amount);
+    },
+    loan(state, {loanAmount,loanTimeStr}){
+      state.account.balances += parseInt(loanAmount);
+      state.account.loan = parseInt(loanAmount);
+      state.account.loanTime = loanTimeStr;
+    },
+    payback(state,amount){
+      state.account.loan -= parseInt(amount);
     }
   },
   actions: {

@@ -63,7 +63,7 @@
 </template>
 <script>
 import Receipt from "@/components/Receipt";
-import LogHelper from "@/utilities/LogHelper";
+import TimeHelper from "@/utilities/TimeHelper";
 
 export default {
   data() {
@@ -127,24 +127,52 @@ export default {
     },
     performTransaction() {
       this.receipt = [];
-      let a = new String(this.loanAmount);
-      let accountNumber = new String(this.$store.state.account.number);
-      let logInfo = LogHelper.log({
-        accountNumber,
-        transactionType: "Loan",
-        amount: a,
-        transTo: ""
+      let number = new String(this.$store.state.account.number);
+
+      this.$store.commit("loan", {
+        loanAmount: new String(this.loanAmount),
+        loanTimeStr: TimeHelper.timeStr()
       });
-      this.$store.commit('increaseBalances',a);
-      this.$store.commit("pushSystemLog", logInfo);
-      for (let receiptItemName in logInfo) {
-        if (logInfo.hasOwnProperty(receiptItemName)) {
-          this.receipt.push({
-            name: receiptItemName,
-            value: logInfo[receiptItemName]
-          });
+
+      let result = [
+        {
+          name: "账号",
+          value: number.slice(0, 10) + "*".repeat(6) + number.slice(16)
+        },
+        {
+          name: "交易类型",
+          value: "贷款"
+        },
+        {
+          name: "金额",
+          value: this.loanAmount
+        },
+        {
+          name: "余额",
+          value: this.$store.state.account.balances
+        },
+        {
+          name: "交易时间",
+          value: TimeHelper.timeStr()
+        },
+        {
+          name: "终端编号",
+          value: new String(this.$store.state.atm.number)
         }
-      }
+      ];
+
+      result.forEach(resultItem => {
+        this.receipt.push(resultItem);
+      });
+
+      this.$store.commit("pushSystemLog", {
+        time: result[4].value,
+        accountNumber: number,
+        transactionType: "LOAN",
+        amount: this.amount,
+        transTo: "-"
+      });
+
       this.step = 1;
     },
     ejectCard() {

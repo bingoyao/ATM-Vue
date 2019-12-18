@@ -76,7 +76,7 @@
 <script>
 import Keyboard from "@/components/Keyboard";
 import Receipt from "@/components/Receipt";
-import LogHelper from "@/utilities/LogHelper";
+import TimeHelper from "@/utilities/TimeHelper";
 
 export default {
   data() {
@@ -133,28 +133,58 @@ export default {
      */
     performTransaction() {
       let to = new String(this.transTo);
+      let number = new String(this.$store.state.account.number);
+      let a = new String(this.amount);
       if (to.length !== 19) {
         this.$message.error("请输入19位银行卡账号");
       } else {
         this.receipt = [];
-        let a = new String(this.amount);
-        let accountNumber = new String(this.$store.state.account.number);
-        let logInfo = LogHelper.log({
-          accountNumber,
-          transactionType: "TRANSFER",
-          amount: a,
-          transTo: to
-        });
-        this.$store.commit('reduceBalances',a);
-        this.$store.commit("pushSystemLog", logInfo);
-        for (let receiptItemName in logInfo) {
-          if (logInfo.hasOwnProperty(receiptItemName)) {
-            this.receipt.push({
-              name: receiptItemName,
-              value: logInfo[receiptItemName]
-            });
+      
+        this.$store.commit("reduceBalances", a);
+
+        let result = [
+          {
+            name: "账号",
+            value: number.slice(0, 10) + "*".repeat(6) + number.slice(16)
+          },
+          {
+            name: "交易类型",
+            value: "转账"
+          },
+          {
+            name: "转入账号",
+            value: to.slice(0, 10) + "*".repeat(6) + to.slice(16)
+          },
+          {
+            name: "金额",
+            value: a
+          },
+          {
+            name: "余额",
+            value: new String(this.$store.state.account.balances)
+          },
+          {
+            name: "交易时间",
+            value: TimeHelper.timeStr()
+          },
+          {
+            name: "终端编号",
+            value: new String(this.$store.state.atm.number)
           }
-        }
+        ];
+
+        result.forEach(resultItem => {
+          this.receipt.push(resultItem);
+        });
+
+        this.$store.commit("pushSystemLog", {
+          time: result[5].value,
+          amount: this.amount,
+          accountNumber: number.slice(0, 10) + "*".repeat(6) + number.slice(16),
+          transactionType: "TRANSFER",          
+          transTo: to.slice(0, 10) + "*".repeat(6) + to.slice(16)
+        });
+
         this.step = 2;
       }
     },

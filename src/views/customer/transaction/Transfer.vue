@@ -139,6 +139,10 @@ export default {
         this.$message.error("请输入19位银行卡账号");
       } else {
         this.receipt = [];
+        if(this.$store.state.account.balances<a){
+          this.$message.error('余额不足');
+          return;
+        }
       
         this.$store.commit("reduceBalances", a);
 

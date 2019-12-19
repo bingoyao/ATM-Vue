@@ -137,6 +137,11 @@ export default {
       } else {
         this.receipt = [];
 
+        if(this.$store.state.atm.cash<a){
+          this.$message.error('ATM余额不足');
+          return;
+        }
+
         this.$store.commit("reduceCash", a);
         this.$store.commit("reduceBalances", a);
         let number = new String(this.$store.state.account.number);

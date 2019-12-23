@@ -2,7 +2,7 @@
   <el-container
     style="width:100%;height:100%;display:flex;justify-content:center;align-items:center;"
   >
-    <!-- 输入金额 接口：键盘 -->
+    <!-- 输入金额 -->
     <el-card v-if="step==0" style="max-width:80%;min-width:700px;height:550px;">
       <el-row :gutter="5">
         <el-col :span="8">
@@ -59,7 +59,7 @@
       </div>
     </el-card>
 
-    <!-- 交易完成， -->
+    <!-- 交易完成 -->
     <el-card v-else-if="step==2" style="max-width:80%;min-width:700px;height:550px;">
       <div slot="header" style="text-align:center;">交易成功</div>
       <receipt :receiptInfo="receipt"></receipt>
@@ -139,6 +139,7 @@ export default {
 
         if(this.$store.state.atm.cash<a){
           this.$message.error('ATM余额不足');
+          this.$router.replace({name:'transaction-select'});
           return;
         }
 

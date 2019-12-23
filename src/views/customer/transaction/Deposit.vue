@@ -39,7 +39,7 @@
 </template>
 <script>
 import Receipt from "@/components/Receipt";
-import LogHelper from "@/utilities/LogHelper";
+import TimeHelper from "@/utilities/TimeHelper";
 
 export default {
   data() {
@@ -90,24 +90,48 @@ export default {
     performTransaction() {
       let a = new String(this.amount);
       this.receipt = [];
-      let accountNumber = new String(this.$store.state.account.number);
-      let logInfo = LogHelper.log({
-        accountNumber,
-        transactionType: 'DEPOSIT',
-        amount: a,
-        transTo: ''
-      });
-      this.$store.commit('increaseCash',a);
-      this.$store.commit('increaseBalances',a);
-      this.$store.commit('pushSystemLog',logInfo);
-      for (let receiptItemName in logInfo) {
-        if (logInfo.hasOwnProperty(receiptItemName)) {
-          this.receipt.push({
-            name: receiptItemName,
-            value: logInfo[receiptItemName]
-          });
+      let number = new String(this.$store.state.account.number);
+
+      this.$store.commit("increaseCash", a);
+      this.$store.commit("increaseBalances", a);
+      let result = [
+        {
+          name: "账号",
+          value: number.slice(0, 10) + "*".repeat(6) + number.slice(16)
+        },
+        {
+          name: "交易类型",
+          value: "存款"
+        },
+        {
+          name: "金额",
+          value: a
+        },
+        {
+          name: "余额",
+          value: new String(this.$store.state.account.balances)
+        },
+        {
+          name: "交易时间",
+          value: TimeHelper.timeStr()
+        },
+        {
+          name: "终端编号",
+          value: new String(this.$store.state.atm.number)
         }
-      }
+      ];
+
+      result.forEach(resultItem => {
+        this.receipt.push(resultItem);
+      });
+
+      this.$store.commit("pushSystemLog", {
+        time: result[4].value,
+        amount: this.amount,
+        accountNumber: number.slice(0, 10) + "*".repeat(6) + number.slice(16),
+        transactionType: "DEPOSIT"
+      });
+
       this.step = 2;
     },
     /**

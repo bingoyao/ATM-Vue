@@ -106,7 +106,7 @@ export default new Vuex.Store({
       state.atm.cash = cash;
     },
     reduceCash(state,amount){
-      if(state.atm.cash>=r){
+      if(state.atm.cash>=amount){
         state.atm.cash -= parseInt(amount);
       }
     },

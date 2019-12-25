@@ -106,9 +106,8 @@ export default new Vuex.Store({
       state.atm.cash = cash;
     },
     reduceCash(state,amount){
-      let r = parseInt(amount);
       if(state.atm.cash>=r){
-        state.atm.cash -= r;
+        state.atm.cash -= parseInt(amount);
       }
     },
     increaseCash(state,amount){
@@ -121,6 +120,7 @@ export default new Vuex.Store({
     },
     payback(state,amount){
       state.account.loan -= parseInt(amount);
+      state.account.balances -= parseInt(amount);
     }
   },
   actions: {

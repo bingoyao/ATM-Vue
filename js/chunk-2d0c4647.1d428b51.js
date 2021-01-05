@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0c4647"],{"3b46":function(e,n,t){"use strict";t.r(n);var a=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("el-card",{attrs:{shadow:"hover"}},[e._v(" 暂停服务 ")])},c=[],r={},s=r,o=t("2877"),u=Object(o["a"])(s,a,c,!1,null,"8159a748",null);n["default"]=u.exports}}]);
+//# sourceMappingURL=chunk-2d0c4647.1d428b51.js.map
